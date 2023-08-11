@@ -1,0 +1,68 @@
+name: build_image
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  BRANCH: ${{ github.ref_name }}
+  REPOSITORY: data-manager
+
+jobs:
+  login-build-push:
+    name: build_image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: "read"
+      id-token: "write"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+      - name: Install dependencies
+        run: |
+          pip install poetry
+          poetry install --no-interaction --no-ansi
+      - name: Run unit tests
+        run: |
+          poetry run pytest
+      - name: "Docker build"
+        run: |-
+          docker build \
+            --tag "palverdata/$REPOSITORY:$GITHUB_SHA" \
+            --tag "palverdata/$REPOSITORY:$BRANCH" \
+            --tag "palverdata/$REPOSITORY:latest" \
+            . -f Dockerfile
+      - id: "auth"
+        name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@v0"
+        with:
+          token_format: "access_token"
+          service_account: "github-deploy-account@palver.iam.gserviceaccount.com"
+          workload_identity_provider: "projects/194896605416/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
+      - uses: "docker/login-action@v1"
+        name: "Docker login"
+        with:
+          registry: "docker.io"
+          username: palverdata
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: "Docker push"
+        run: |-
+          docker push -a "palverdata/$REPOSITORY"
+      # TODO: enable deploy to cluster
+      # - name: "Set up Cloud SDK"
+      #   uses: "google-github-actions/setup-gcloud@v1"
+      #   with:
+      #     version: ">= 416.0.0"
+      # - id: "get-credentials"
+      #   uses: "google-github-actions/get-gke-credentials@v1"
+      #   with:
+      #     cluster_name: "cluster-1"
+      #     location: "us-central1-a"
+      # - name: "Deploy to cluster"
+      #   run: |-
+      #     envsubst < .k8s/shard_cron.yml | kubectl apply -f -

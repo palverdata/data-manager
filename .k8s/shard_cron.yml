@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cra-shard-cron
+  namespace: palver
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          imagePullSecrets:
+            - name: dockerhub-palverdata
+          containers:
+            - name: data-manager-shard-cron
+              image: palverdata/data-manager:latest
+              command: ["python", "scripts/cron/cra_shard_cron.py"]
+              envFrom:
+                - configMapRef:
+                    name: data-manager-env
+          restartPolicy: OnFailure
