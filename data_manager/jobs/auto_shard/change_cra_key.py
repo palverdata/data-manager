@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from data_manager.logger import logger
 from data_manager.models.solr_config import SolrConfig
 from data_manager.solr import count_documents
 
@@ -18,8 +19,15 @@ class ChangeCRAKeyJob:
 
         total = count_documents(config.current_shard_collection)
 
+        logger.info(
+            f"Current shard key for {config.collection} is {config.shard_key} "
+            f"with {total} documents"
+        )
+
         if total >= config.shard_threshold:
             now = datetime.utcnow()
+
+            logger.info(f"Changing shard key for {config.collection} to {now}")
 
             config.update(
                 shard_key=now.strftime("%Y-%m-%dT%H:%M:%SZ"),
