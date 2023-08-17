@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from data_manager.entrypoint import Entrypoint
 from data_manager.logger import logger
 from data_manager.models.solr_config import SolrConfig
 from data_manager.solr import count_documents
@@ -34,5 +35,6 @@ class ChangeCRAKeyJob:
             )
 
     def perform(self):
-        for config in SolrConfig.find({"shard_type": "cra_time"}):
-            self._change_cra_key(config)
+        with Entrypoint():
+            for config in SolrConfig.find({"shard_type": "cra_time"}):
+                self._change_cra_key(config)
