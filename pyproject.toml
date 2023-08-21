@@ -20,6 +20,15 @@ pytest = "^7.4.0"
 ruff = "^0.0.284"
 ipykernel = "^6.25.1"
 tox = "^4.10.0"
+commitizen = "^3.6.0"
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "$version"
+version_scheme = "semver"
+version_provider = "poetry"
+update_changelog_on_bump = true
+major_version_zero = true
 
 [build-system]
 requires = ["poetry-core"]
