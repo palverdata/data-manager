@@ -1,8 +1,10 @@
-from mongoflex import Model as BaseModel
+from data_manager.models.data_source import DataSource
+from data_manager.models.model import CLIENT_NAME, Model
+from data_manager.models.solr_config import SolrConfig
 
-CLIENT_NAME = "data_manager"
-
-
-class Model(BaseModel):
-    class Meta:
-        client_name = CLIENT_NAME
+__all__ = [
+    "Model",
+    "CLIENT_NAME",
+    "DataSource",
+    "SolrConfig",
+]

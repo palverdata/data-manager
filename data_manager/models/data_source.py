@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from pymongo import IndexModel
 
-from data_manager.models import Model
+from data_manager.models.model import Model
 
 
 @dataclass

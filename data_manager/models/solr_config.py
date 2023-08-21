@@ -5,7 +5,7 @@ from typing import Literal, Optional
 from bson import ObjectId
 from pymongo import IndexModel
 
-from data_manager.models import Model
+from data_manager.models.model import Model
 
 _ShardOption = Literal["cra_time"]
 
