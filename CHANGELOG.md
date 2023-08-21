@@ -1,3 +1,9 @@
+## 0.2.1 (2023-08-21)
+
+### Refactor
+
+- allow to import models from top level module
+
 ## 0.2.0 (2023-08-21)
 
 ### Feat
