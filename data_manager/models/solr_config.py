@@ -1,3 +1,4 @@
+import re
 from dataclasses import dataclass
 from typing import Literal, Optional
 
@@ -6,6 +7,10 @@ from mongoflex import Model
 from pymongo import IndexModel
 
 _ShardOption = Literal["cra_time"]
+
+
+def normalize_cra_name(name: str):
+    return re.sub(r"[^a-zA-Z0-9]", "_", name)
 
 
 @dataclass
@@ -27,6 +32,6 @@ class SolrConfig(Model):
     @property
     def current_shard_collection(self) -> str:
         if self.shard_type == "cra_time":
-            return f"{self.collection}__CRA__{self.shard_key}"
+            return f"{self.collection}__CRA__{normalize_cra_name(self.shard_key)}"
 
         return self.collection
