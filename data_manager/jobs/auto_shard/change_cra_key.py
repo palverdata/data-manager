@@ -15,7 +15,7 @@ class ChangeCRAKeyJob:
     the next shard key until the threshold is exceeded again.
     """
 
-    def _change_cra_key(self, config: SolrConfig):
+    def change_cra_key(self, config: SolrConfig):
         """Change the shard key for a given config."""
 
         total = count_documents(config.current_shard_collection)
@@ -37,4 +37,4 @@ class ChangeCRAKeyJob:
     def perform(self):
         with Entrypoint():
             for config in SolrConfig.find({"shard_type": "cra_time"}):
-                self._change_cra_key(config)
+                self.change_cra_key(config)
