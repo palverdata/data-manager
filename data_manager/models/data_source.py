@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
-from mongoflex import Model
 from pymongo import IndexModel
+
+from data_manager.models import Model
 
 
 @dataclass

@@ -3,8 +3,9 @@ from dataclasses import dataclass
 from typing import Literal, Optional
 
 from bson import ObjectId
-from mongoflex import Model
 from pymongo import IndexModel
+
+from data_manager.models import Model
 
 _ShardOption = Literal["cra_time"]
 
