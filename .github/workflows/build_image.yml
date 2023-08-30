@@ -53,16 +53,15 @@ jobs:
       - name: "Docker push"
         run: |-
           docker push -a "palverdata/$REPOSITORY"
-      # TODO: enable deploy to cluster
-      # - name: "Set up Cloud SDK"
-      #   uses: "google-github-actions/setup-gcloud@v1"
-      #   with:
-      #     version: ">= 416.0.0"
-      # - id: "get-credentials"
-      #   uses: "google-github-actions/get-gke-credentials@v1"
-      #   with:
-      #     cluster_name: "cluster-1"
-      #     location: "us-central1-a"
-      # - name: "Deploy to cluster"
-      #   run: |-
-      #     envsubst < .k8s/shard_cron.yml | kubectl apply -f -
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v1"
+        with:
+          version: ">= 416.0.0"
+      - id: "get-credentials"
+        uses: "google-github-actions/get-gke-credentials@v1"
+        with:
+          cluster_name: "cluster-1"
+          location: "us-central1-a"
+      - name: "Deploy to cluster"
+        run: |-
+          envsubst < .k8s/shard_cron.yml | kubectl apply -f -
