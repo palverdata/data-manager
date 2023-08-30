@@ -12,3 +12,6 @@ class Entrypoint:
         connect(self.config.mongo_url, CLIENT_NAME)
 
         return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pass
