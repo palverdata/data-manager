@@ -1,3 +1,15 @@
+## 0.3.0 (2023-08-30)
+
+### Feat
+
+- add utility function to connect to mongo
+- add utility function mongourl_replace
+- add media processing config model
+
+### Fix
+
+- entrypoint to work with `with`
+
 ## 0.2.1 (2023-08-21)
 
 ### Refactor
