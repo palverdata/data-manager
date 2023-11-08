@@ -1,3 +1,9 @@
+## 0.3.1 (2023-11-08)
+
+### Fix
+
+- **deps**: allow every 0.* version of mongoflex to be used together
+
 ## 0.3.0 (2023-08-30)
 
 ### Feat
